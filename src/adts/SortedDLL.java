@@ -10,14 +10,16 @@ public class SortedDLL<E> implements ListInterface<E> {
 	private DLLNode<E> head;
 	private DLLNode<E> tail;
 
-	public SortedDLL() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public void add(E element) {
-		// TODO Auto-generated method stub
-
+		DLLNode<E> newNode = new DLLNode<>(element);
+		if (numElements == 0) {
+			head = tail = newNode;
+		} else {
+			
+			int addLocation = 0;
+		}
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public class SortedDLL<E> implements ListInterface<E> {
 				hit = true;
 				break;
 			}else {
-				temp = temp.getNext()
+				temp = temp.getNext();
 			}//end if
 		}//end for
 		return hit;
