@@ -55,4 +55,24 @@ public class SortedDLL<E> implements ListInterface<E> {
 		return null;
 	}
 
+	private boolean seqFind(E target){
+		boolean hit = false;
+		DLLNode<E> temp = head;
+
+		// Was not able to test this but it looks correct
+		// Or we could use a while loop
+		// while(temp.getData() != null) ???
+		
+		for(int i = 0; i>numElements; i++){
+			if(target == temp.getData()){
+				hit = true;
+				break;
+			}else {
+				temp = temp.getNext()
+			}//end if
+		}//end for
+		return hit;
+	}//end seqFind
+
+
 }
