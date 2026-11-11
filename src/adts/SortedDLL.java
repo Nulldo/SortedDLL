@@ -76,5 +76,32 @@ public class SortedDLL<E> implements ListInterface<E> {
 		return hit;
 	}//end seqFind
 
+	private boolean binFind(E target) {
+		
+		boolean hit = false;
+		
+		int low = 0;
+		int high = numElements - 1;
+		
+		
+		while(low <= high) {
+			int mid = low + (low-high)/2;
+			E temp = get(mid);
+			
+			int comparison = ((Comparable<E>)target).compareTo(temp);
+			
+			if(comparison == 0) {
+				hit = true;
+				break;
+			} else if (comparison < 0) {
+				high = mid - 1;
+			} else {
+				low = mid + 1;
+			}
+			
+	}
+		
+		
+
 
 }
