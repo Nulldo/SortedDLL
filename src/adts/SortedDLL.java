@@ -99,6 +99,8 @@ public class SortedDLL<E> implements ListInterface<E> {
 				low = mid + 1;
 			}
 
+		}
+
 		return hit;
 			
 	}
