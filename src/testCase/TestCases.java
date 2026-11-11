@@ -61,10 +61,12 @@ public class TestCases {
 		System.out.println(randomSort(list) + "\nThere are " + list.size() + " movies on the list.");
 				
 		//Find a movie using binary search, display its position in the list ('It is the Xth movie')
-		System.out.println(list.getBinary("The Lego Movie").getData() + " found, it is");
+		System.out.println(list.get("The Lego Movie").getData() + " found, it is");
 		
 		//Find a movie using sequential search, display its position in the list ('... Xth movie')
-		System.out.println(list.getSequential("Project Hail Mary").getData() + " found, it is in position " + list.getIndex("Project Hail Mary"));
+		System.out.println(list.get(5).getData() + " found, it is in position " + list.getIndex("Project Hail Mary"));
+		
+		System.out.println("Is the list empty: " + list.isEmpty());
 
 
 	}
