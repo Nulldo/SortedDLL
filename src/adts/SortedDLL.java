@@ -65,7 +65,7 @@ public class SortedDLL<E> implements ListInterface<E> {
 		// Or we could use a while loop
 		// while(temp.getData() != null) ???
 		
-		for(int i = 0; i>numElements; i++){
+		for(int i = 0; i<numElements; i++){
 			if(target == temp.getData()){
 				hit = true;
 				break;
