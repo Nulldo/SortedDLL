@@ -19,52 +19,64 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 		DLLNode<E> newNode = new DLLNode<>(element);
 		if(numElements ==0) {
 			head = tail = newNode;
-		} else {
-			DLLNode<E> temp = head;
-			for(int i = 0; i<numElements; i++) {
-				if (((Comparable)newNode.getData()).compareTo(head.getData()) >=0) {
-					newNode.setNext(head);;
-					head.setPrev(newNode);;
+		} else if (numElements == 1) {
+				if (((Comparable)newNode.getData()).compareTo(head.getData()) <=0) {
+					newNode.setNext(head);
+					head.setPrev(newNode);
+					tail = head;
 					head=newNode;
-					break;
-				}
-				else if (temp.getNext() == null) {
-					newNode.setPrev(tail);
-					tail.setNext(newNode);
-					tail = newNode;
-					break;
-				}
-				else if(((Comparable)newNode.getData()).compareTo(temp.getData()) >=0 && ((Comparable)newNode.getData()).compareTo(temp.getPrev().getData()) <= 0) {
-					temp.setNext(newNode);
-					newNode.setNext(temp);
-					newNode.setPrev(temp.getPrev());
-					temp.setPrev(newNode);
-					break;
 				} else {
-					temp = temp.getNext();
+					newNode.setPrev(head);
+					head.setNext(newNode);
+					tail = newNode;
 				}
+		} else {
+			if (((Comparable)newNode.getData()).compareTo(head.getData()) <=0) {
+				newNode.setNext(head);
+				head.setPrev(newNode);
+				head=newNode;
+			} else if (((Comparable)newNode.getData()).compareTo(tail.getData()) >= 0) {
+				newNode.setPrev(tail);
+				tail.setNext(newNode);
+				tail = newNode;
+			} else {
+				DLLNode<E> temp = head.getNext();
+				DLLNode<E> pointer;
+				
+				for(int i = 0; i<numElements; i++) {
+					if(((Comparable)newNode.getData()).compareTo(temp.getData()) <0) {
+						break;
+					}else {
+						temp = temp.getNext();
+					}
+				}
+				newNode.setNext(temp);
+				newNode.setPrev(temp.getPrev());
+				temp.getPrev().setNext(newNode);
+				temp.setPrev(newNode);
 			}
 		}
+		numElements++;
 	}
 	@Override
 	public boolean remove(E element) {
-		find(element);
-		   if (seqFind(element) == false) {
+		if (find(element) == false) {
 		      return false;
-		   }
-		 
-		   location.getPrev().setNext(location.getNext());
-		   location.getNext().setPrev(location.getPrev());
-		   if (location.getPrev() == null) {
-		      head = location.getNext();
-		   } else if (location.getNext() == null ){
-		      tail = location.getPrev();
-		   } else {
-		      location.getPrev().setNext(location.getNext());
-		      location.getNext().setPrev(location.getPrev());
-		   }
-		   numElements -= 1;
-		   return true;
+		}
+		if (numElements==1) {
+			head = tail = null;
+		} else if (location == head) {
+			head = location.getNext();
+			head.setPrev(null);
+		} else if (location == tail){
+			tail = location.getPrev();
+			tail.setNext(null);
+		} else {
+			location.getPrev().setNext(location.getNext());
+			location.getNext().setPrev(location.getPrev());
+		}
+		numElements -= 1;
+		return true;
 	}
 	@Override
 	public int size() {
@@ -79,20 +91,21 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 		return find(element);
 	}
 	@Override
+	public E get(int index) {
+		DLLNode<E> temp = head;
+		for (int i=0; i < index; i++) {
+			temp = temp.getNext();
+		}
+		location = temp;
+		return temp.getData();
+	}
+	@Override
 	public E get(E element) {
 		if (find(element)) {
 			return location.getData();
 		}
 		
 		return null;
-	}
-	@Override
-	public E get(int index) {
-		DLLNode<E> temp = head;
-		for (int i=0; i < index; i++) {
-			temp = temp.getNext();
-		}
-		return temp.getData();
 	}
 	
 	public void setFind(String type) {
@@ -138,8 +151,7 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 		
 		while(low <= high) {
 			int mid = low + (low-high)/2;
-			E temp = get(mid);
-			int comparison = ((Comparable<E>)target).compareTo(temp);
+			int comparison = ((Comparable<E>)target).compareTo(get(mid));
 			
 			if(comparison == 0) {
 				hit = true;
@@ -166,7 +178,7 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 				throw new NoSuchElementException();
 			}
 			E data = current.getData();
-			current = current.getPrev();
+			current = current.getNext();
 			return data;
 		}
 	}
@@ -175,7 +187,7 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 		E[] array = (E[]) new Object[numElements];
 		DLLNode<E> current = head;
 		int index = 0;
-		public void RandomIterator () {
+		public RandomIterator () {
 
 			for (int i=0; i < numElements; i++){
 				array[i] = current.getData();
@@ -183,8 +195,8 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 			}
 	
 	
-			for (int i = array.length -1; i>0; i--){
-				int x = (int)(Math.random() * (i+1));
+			for (int i = 0; i< array.length; i++){
+				int x = (int)(Math.random() * (array.length));
 				E temp = array[i];
 				array[i] = array[x];
 				array[x] = temp;
@@ -252,7 +264,7 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 		DLLNode<E> current = head;
 
 		while (current != null) {
-			sb.append(current.getData() + " ");
+			sb.append(current.getData() + ", ");
 			current = current.getNext();
 		}
 		return sb.toString();

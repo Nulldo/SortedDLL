@@ -6,8 +6,10 @@ public class TestCases {
 
 	public static void main(String[] args) {
 		
-		SortedDLL<String> list = new SortedDLL<String>();
+		//Instantiates list
+		SortedDLL<String> list = new SortedDLL<>();
 		
+		//Adds objects to list
 		list.add("Citizen Kane");
 		list.add("The Lego Movie");
 		list.add("Kung Fu Panda 2");
@@ -15,60 +17,76 @@ public class TestCases {
 		list.add("Robots");
 		list.add("Whiplash");
 		
-		//Display list of movies head to tail + number of movies
-		System.out.println("List of Movies:\n" + list + "\nThere are " + list.size() + " movies on the list.");
+		//Prints out the objects within the list horizontally 
+		//Expected output:Citizen Kane, Kung Fu Panda 2, Project Hail Mary, Robots, The Lego Movie, Whiplash, 
+		System.out.println("List of movies in alphabetical order " + list.toString());
 		
-		//Add a movie to the list
-		list.add("Princess Mononoke");
+		System.out.println();
 		
-		//Display added movie
-		System.out.println("Princess Mononoke added.");
+		//Checks if list contains robots (case sensitive)
+		//Expected output: This list does not contain robots
+		//Gets for element index based searches
+		//Expected output for both: Robots
+		System.out.println(list.contains("robots") ? "This list contains robots" : "This list does not contain robots");
+		System.out.println("get Robots: " + list.get("Robots"));
+		System.out.println("get 4th item: " + list.get(3));
 		
-		//Sort
-		list.sort();
+		System.out.println();
 		
-		//Add a movie at the head
-		list.add("American Psycho");
+		//Gets the number of objects in the list
+		System.out.println("Number of movies in the list: " + list.size()); //Expected output: 6
 		
-		//Display added movie
-		System.out.println("American Psycho added.");
+		//Gets the current iteration method
+		//Expected output: Forward
+		System.out.println("Current iteration method: " + list.getIterator());
 		
-		//Sort
-		list.sort();
-		
-		//Display list of movies tail to head + number of movies
-		System.out.println("Cool movie list, let's see it in reverse!");
-		System.out.println(reverseSort(list) + "\nThere are " + list.size() + " movies on the list.");
-				
-		//Remove a movie from the list (Citizen Kane)
-		list.remove("Citizen Kane");
-		
-		//Display removed movie
-		System.out.println("Citizen Kane Removed");		
-		
-		//Remove tail movie
-		String removed = list.getTail;
-		list.remove(list.getTail);
-		
-		//Display removed movie
-		System.out.println(removed + " removed.");
-		
-		//Display list of movies
-		System.out.println(sort(list));
-		
-		//Display list of movies randomly + number of movies
-		System.out.println("Time to scramble the movies!");
-		System.out.println(randomSort(list) + "\nThere are " + list.size() + " movies on the list.");
-				
-		//Find a movie using binary search, display its position in the list ('It is the Xth movie')
-		System.out.println(list.get("The Lego Movie").getData() + " found, it is");
-		
-		//Find a movie using sequential search, display its position in the list ('... Xth movie')
-		System.out.println(list.get(5).getData() + " found, it is in position " + list.getIndex("Project Hail Mary"));
-		
-		System.out.println("Is the list empty: " + list.isEmpty());
-
-
+	    System.out.print("\nForward Enhanced For Loop: ");
+	    
+	    for (String movie : list) {
+	    	System.out.print(movie + ", ");
+	    }
+	    
+	    //Sets the current iteration method to reverse
+	  	//Expected output: Whiplash, The Lego Movie, Robots, Project Hail Mary, Kung Fu Panda 2, Citizen Kane,
+	    list.setIterator("reverse");
+	    System.out.print("\nReverse Enhanced For Loop: ");
+	    for (String movie : list) {
+	    	System.out.print(movie + ", ");
+	    }
+	    
+	    //Sets the current iteration method to random
+	    //Expected output: a random list of movies i.e.: Robots, Kung Fu Panda 2, Whiplash, The Lego Movie, Citizen Kane, Project Hail Mary,
+	    list.setIterator("random");
+	    System.out.print("\nRandom Enhanced For Loop: ");
+	    for (String movie : list ) {
+	    	System.out.print(movie + ", ");
+	    }
+	    
+	    System.out.println();
+	    System.out.println();
+	    
+	    //Removes two movies
+	    System.out.println(list.remove("Robots") ? "Robots removed" : "Robots not found on the list"); //Expected output: Robots removed
+	    System.out.println(list.remove("Whiplash") ? "Whiplash removed" : "Whiplash not found on the list"); //Expected output: Whiplash removed
+	    System.out.println(list.remove("Robots") ? "Robots removed" : "Robots not found on the list"); //Expected output: Robots not found on the list
+	    
+	    //Shows the order of list is sill intact
+	    //Expected output: Citizen Kane, Kung Fu Panda 2, Project Hail Mary, The Lego Movie,
+	    System.out.println("\nMovie list after removing Robots and Whiplash: " + list); 	
+	    
+	    //Gets the number of objects in the list
+	    System.out.println("\nNumber of movies in the list: " + list.size()); //Expected output: 4
+	    
+	    //Sets the find to binary search
+	    list.setFind("binary");
+	    while (!list.isEmpty()) {
+	    	//Removes everything from list
+			list.remove(list.get(0));
+		}
+	    
+	    //Expected output: 
+	    System.out.println("\nEmpty list:" + list);
+	    
 	}
 
 }
