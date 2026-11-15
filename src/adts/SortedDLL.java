@@ -5,11 +5,15 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 	
-	private int numElements = 0;
+	protected int numElements = 0;
 	
 	private DLLNode<E> head;
 	private DLLNode<E> tail;
 	private DLLNode<E> location;
+	
+	private String findType = "Sequential";
+	private String iteratorType = "Forward";
+	
 	@Override
 	public void add(E element) {
 		DLLNode<E> newNode = new DLLNode<>(element);
@@ -44,7 +48,7 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 	}
 	@Override
 	public boolean remove(E element) {
-		seqFind(element);
+		find(element);
 		   if (seqFind(element) == false) {
 		      return false;
 		   }
@@ -72,36 +76,60 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 	}
 	@Override
 	public boolean contains(E element) {
-		// TODO Auto-generated method stub
-		return false;
+		return find(element);
 	}
 	@Override
 	public E get(E element) {
-		// TODO Auto-generated method stub
+		if (find(element)) {
+			return (E) location;
+		}
+		
 		return null;
 	}
 	@Override
 	public E get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		DLLNode<E> temp = head;
+		for (int i=0; i < index; i++) {
+			temp = temp.getNext();
+		}
+		return (E) temp;
 	}
+	
+	public void setFind(String type) {
+		
+		if (type.equalsIgnoreCase("Sequential")) {
+			findType = "Sequential";
+		} else if (type.equalsIgnoreCase("Binary")) {
+			findType = "Binary";
+		}
+	}
+	
+	private boolean find(E target) {
+		if (findType.equalsIgnoreCase("Sequential")) {
+			return seqFind(target);
+		} else {
+			return binFind(target);
+		}
+	}
+	
 	private boolean seqFind(E target){
 		boolean hit = false;
-		DLLNode<E> temp = head;
+		location = head;
 		// Was not able to test this but it looks correct
 		// Or we could use a while loop
 		// while(temp.getData() != null) ???
 		
 		for(int i = 0; i<numElements; i++){
-			if(target == temp.getData()){
+			if(target == location.getData()){
 				hit = true;
 				break;
 			}else {
-				temp = temp.getNext();
+				location = location.getNext();
 			}//end if
 		}//end for
 		return hit;
-	}//end seqFind
+	//end seqFind
+	}
 	private boolean binFind(E target) {
 		
 		boolean hit = false;
@@ -143,7 +171,91 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 		}
 	}
 	
+	private class RandomIterator implements Iterator<E> {
+		E[] array = (E[]) new Object[numElements];
+		DLLNode<E> current = head;
+		int index = 0;
+		public void RandomIterator () {
+
+			for (int i=0; i < numElements; i++){
+				array[i] = current.getData();
+				current = current.getNext();
+			}
+	
+	
+			for (int i = array.length -1; i>0; i--){
+				int x = (int)(Math.random() * (i+1));
+				E temp = array[i];
+				array[i] = array[x];
+				array[x] = temp;
+			}
+
+		}
+
+		@Override
+		public boolean hasNext() {
+			return index < numElements;
+		}
+
+		@Override
+		public E next() {
+			return array[index++];
+		}
+	}
+	
+	private class ReverseIterator implements Iterator<E> {
+		private DLLNode<E> current = tail;
+		
+		@Override
+		public boolean hasNext() {
+			return current != null;
+		}
+		@Override
+		public E next() {
+			if(!hasNext()){
+				throw new NoSuchElementException();
+			}
+			E data = current.getData();
+			current = current.getPrev();
+			return data;
+		}
+	}
+	
+	public void setIterator(String type) {
+
+		if (type.equalsIgnoreCase("Forward")) {
+			iteratorType = "Forward";
+		} else if (type.equalsIgnoreCase("Reverse")) {
+			iteratorType = "Reverse";
+		} else if (type.equalsIgnoreCase("Random")) {
+			iteratorType = "Random";
+		}
+
+	}
+	
+	public String getIterator() {
+		return iteratorType;
+	}
+	
 	public Iterator<E> iterator() {
+		if (iteratorType.equalsIgnoreCase("Reverse")) {
+			return new ReverseIterator();
+		} else if (iteratorType.equalsIgnoreCase("Random")) {
+			return new RandomIterator();
+		}
 		return new ForwardIterator();
+	}
+	
+	@Override
+	public String toString () {
+		StringBuilder sb = new StringBuilder();
+		DLLNode<E> current = head;
+
+		while (current != null) {
+			sb.append(current.getData() + " ");
+			current = current.getNext();
+		}
+		return sb.toString();
+ 
 	}
 }
