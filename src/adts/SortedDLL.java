@@ -81,7 +81,7 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 	@Override
 	public E get(E element) {
 		if (find(element)) {
-			return (E) location;
+			return location.getData();
 		}
 		
 		return null;
@@ -92,7 +92,7 @@ public class SortedDLL<E> implements ListInterface<E>, Iterable<E> {
 		for (int i=0; i < index; i++) {
 			temp = temp.getNext();
 		}
-		return (E) temp;
+		return temp.getData();
 	}
 	
 	public void setFind(String type) {
